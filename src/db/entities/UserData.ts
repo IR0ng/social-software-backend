@@ -52,10 +52,10 @@ export class UserData extends BaseEntity {
   chatroomUserRelations?: ChatroomUserRelation[]
 
   @OneToMany(() => FollowShip, (followShip) => followShip.follower)
-  followShips?: FollowShip[]
+  following?: FollowShip[]
 
   @OneToMany(() => FollowShip, (followShip) => followShip.following)
-  followShips2?: FollowShip[]
+  follower?: FollowShip[]
 
   @OneToMany(() => Message, (message) => message.user)
   messages?: Message[]

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import jwt, { JsonWebTokenError, JwtPayload } from "jsonwebtoken"
 import { RESPONSE_CODE } from "../types"
-import { findUserBy } from "~/User/user.model"
+import { findUserBy } from "~/user/user.model"
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {

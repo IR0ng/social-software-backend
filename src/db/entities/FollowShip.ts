@@ -41,14 +41,14 @@ export class FollowShip extends BaseEntity {
   })
   updatedAt?: Date
 
-  @ManyToOne(() => UserData, (userData) => userData.followShips, {
+  @ManyToOne(() => UserData, (userData) => userData.following, {
     onDelete: "CASCADE",
     onUpdate: "RESTRICT",
   })
   @JoinColumn([{ name: "follower_id", referencedColumnName: "id" }])
   follower?: UserData
 
-  @ManyToOne(() => UserData, (userData) => userData.followShips2, {
+  @ManyToOne(() => UserData, (userData) => userData.follower, {
     onDelete: "CASCADE",
     onUpdate: "RESTRICT",
   })

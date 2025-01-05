@@ -27,3 +27,15 @@ export interface ILoginResponse {
   token: string
   user: UserData
 }
+
+export interface IAuth {
+  userId: string
+}
+export interface IGetUserReqParams {
+  userId: string
+}
+
+export interface IGetUserResponse {
+  status: string
+  user: UserData
+}

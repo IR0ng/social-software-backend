@@ -1,15 +1,21 @@
-import { IAccount, IApi, RESPONSE_CODE } from "~/types"
-import FeatureError from "~/utils/FeatureError"
-import { loginFeature, signUpFeature } from "./user.feature"
-import { ILoginResponse, ISignUpResponse, IUser } from "./types"
+import { IAccount, IApi } from "~/types"
+import { getUserFeature, loginFeature, signUpFeature } from "./user.feature"
+import {
+  IAuth,
+  IGetUserReqParams,
+  IGetUserResponse,
+  ILoginResponse,
+  ISignUpResponse,
+  IUser,
+} from "./types"
+import errorHandler from "~/utils/errorHandler"
 
-export const signUpController: IApi<IUser, ISignUpResponse> = async (
+export const signUpController: IApi<any, ISignUpResponse, IUser, any> = async (
   req,
   res,
 ) => {
   try {
     const { newUser, token } = await signUpFeature({ ...req.body })
-
     return res.status(200).send({
       newUser,
       status: "ok",
@@ -17,24 +23,14 @@ export const signUpController: IApi<IUser, ISignUpResponse> = async (
       token,
     })
   } catch (error) {
-    if (error instanceof FeatureError) {
-      res.status(error.serverStatus).send({
-        status: "error",
-        code: error.code,
-        message: error.message,
-      })
-    } else {
-      res.status(500).send({
-        status: "error",
-        code: RESPONSE_CODE.UNKNOWN_ERROR,
-        message: error,
-      })
-      throw error
-    }
+    errorHandler(res, error)
   }
 }
 
-export const login: IApi<IAccount, ILoginResponse> = async (req, res) => {
+export const loginController: IApi<any, ILoginResponse, IAccount, any> = async (
+  req,
+  res,
+) => {
   try {
     const { email, password } = req.body
     const { user, token } = await loginFeature({ email, password })
@@ -46,19 +42,24 @@ export const login: IApi<IAccount, ILoginResponse> = async (req, res) => {
       user,
     })
   } catch (error) {
-    if (error instanceof FeatureError) {
-      res.status(error.serverStatus).send({
-        status: "error",
-        code: error.code,
-        message: error.message,
-      })
-    } else {
-      res.status(500).send({
-        status: "error",
-        code: RESPONSE_CODE.UNKNOWN_ERROR,
-        message: error,
-      })
-      throw error
-    }
+    errorHandler(res, error)
+  }
+}
+
+export const getUserController: IApi<
+  IGetUserReqParams,
+  IGetUserResponse,
+  any,
+  any
+> = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const user = await getUserFeature({ userId: Number(userId) })
+    res.status(200).send({
+      status: "ok",
+      user,
+    })
+  } catch (error) {
+    errorHandler(res, error)
   }
 }

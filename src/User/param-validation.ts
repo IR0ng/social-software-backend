@@ -10,3 +10,9 @@ export const signUpSchema = Joi.object({
     introduction: Joi.string().required().max(500),
   }),
 })
+
+export const getUserInfoSchema = Joi.object({
+  body: Joi.object().keys({
+    userId: Joi.number().required(),
+  }),
+})

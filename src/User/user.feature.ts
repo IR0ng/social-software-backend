@@ -1,4 +1,4 @@
-import { IUser } from "~/User/types"
+import { IUser } from "~/user/types"
 import bcrypt from "bcrypt"
 import { IAccount, RESPONSE_CODE } from "~/types"
 import { generateToken } from "~/utils/account"
@@ -11,12 +11,12 @@ export const signUpFeature = async (
 ): Promise<{ newUser: UserData; token: string }> => {
   try {
     const { email, password, userName } = data
-    const isEmailExist = await findUserBy({ email, userName })
-    if (isEmailExist) {
+    const isAccountExist = await findUserBy({ email, userName })
+    if (isAccountExist) {
       throw new FeatureError(
         403,
         RESPONSE_CODE.DATA_DUPLICATE,
-        `Email: ${email} has been created`,
+        `User name or email has been created`,
       )
     }
 
@@ -53,7 +53,7 @@ export const loginFeature = async ({
       throw new FeatureError(
         403,
         RESPONSE_CODE.USER_DATA_ERROR,
-        "User's name or password is not correct",
+        "User's email or password is not correct",
       )
     }
 
@@ -63,6 +63,26 @@ export const loginFeature = async ({
       user,
       token,
     }
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getUserFeature = async ({
+  userId,
+}: {
+  userId: number
+}): Promise<UserData> => {
+  try {
+    const user = await findUserBy({ id: userId })
+    if (!user) {
+      throw new FeatureError(
+        400,
+        RESPONSE_CODE.TARGET_NOT_EXISTS,
+        "User not found.",
+      )
+    }
+    return user
   } catch (error) {
     throw error
   }

@@ -9,17 +9,22 @@ export enum RESPONSE_CODE {
   UNKNOWN_ERROR = "5000",
 }
 
-interface IRequest<T> extends Request {
-  body: T
-}
-
-interface IFeatureError {
+export interface IFeatureError {
+  status: string
   code: RESPONSE_CODE
   message: string | unknown
 }
 
-export interface IApi<APIRequest, APIResponse> {
-  (req: IRequest<APIRequest>, res: Response<APIResponse | IFeatureError>): void
+export interface IApi<
+  Params = any,
+  ResBody = any,
+  ReqBody = any,
+  ReqQuery = any,
+> {
+  (
+    req: Request<Params, ResBody, ReqBody, ReqQuery>,
+    res: Response<ResBody | IFeatureError>,
+  ): void
 }
 
 export enum GENDER {

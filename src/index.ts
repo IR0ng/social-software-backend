@@ -8,16 +8,17 @@ import { ValidationError } from "express-validation"
 import dataSource from "./db/dataSource"
 
 import { ClientToServerEvents, ServerToClientEvents } from "./types"
-import userRouter from "./User/user.router"
+import userRouter from "./user/user.router"
+import activityRouter from "./activity/activity.router"
 
 export const createServer = async () => {
   await dataSource.initialize()
   const app: Express = express()
   app.use(cors())
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: true }))
 
-  app.use("/api/user", userRouter)
+  app.use("/api/user", [userRouter, activityRouter])
 
   app.use((req: Request) => {
     console.log("index", req.body)
