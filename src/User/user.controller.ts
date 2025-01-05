@@ -46,6 +46,24 @@ export const loginController: IApi<any, ILoginResponse, IAccount, any> = async (
   }
 }
 
+export const getUserByAuthController: IApi<
+  any,
+  IGetUserResponse,
+  IAuth,
+  any
+> = async (req, res) => {
+  try {
+    const { userId } = req.body
+    const user = await getUserFeature({ userId: Number(userId) })
+    res.status(200).send({
+      status: "ok",
+      user,
+    })
+  } catch (error) {
+    errorHandler(res, error)
+  }
+}
+
 export const getUserController: IApi<
   IGetUserReqParams,
   IGetUserResponse,

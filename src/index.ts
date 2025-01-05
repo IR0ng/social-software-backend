@@ -10,6 +10,7 @@ import dataSource from "./db/dataSource"
 import { ClientToServerEvents, ServerToClientEvents } from "./types"
 import userRouter from "./user/user.router"
 import activityRouter from "./activity/activity.router"
+import postRouter from "./post/post.router"
 
 export const createServer = async () => {
   await dataSource.initialize()
@@ -19,7 +20,7 @@ export const createServer = async () => {
   app.use(express.urlencoded({ extended: true }))
 
   app.use("/api/user", [userRouter, activityRouter])
-
+  app.use("/api/post", postRouter)
   app.use((req: Request) => {
     console.log("index", req.body)
   })

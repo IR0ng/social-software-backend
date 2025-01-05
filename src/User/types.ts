@@ -29,7 +29,7 @@ export interface ILoginResponse {
 }
 
 export interface IAuth {
-  userId: string
+  userId: number
 }
 export interface IGetUserReqParams {
   userId: string

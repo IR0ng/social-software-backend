@@ -2,6 +2,7 @@ import express from "express"
 
 import { validation } from "~/middleware/validation"
 import {
+  getUserByAuthController,
   getUserController,
   loginController,
   signUpController,
@@ -15,6 +16,8 @@ const router = express.Router()
 router.route("/sign-up").post(validation(signUpSchema), signUpController)
 
 router.route("/login").post(validation(accountSchema), loginController)
+
+router.route("/info/self").get(auth, getUserByAuthController)
 
 router
   .route("/info/:userId")
